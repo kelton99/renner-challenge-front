@@ -7,7 +7,6 @@ export default function Cards({ products }) {
 	return (
 		<>
 				{products.map((product) => (
-					
 					<div className="col-lg-3 col-sm-6 col-12" key={product._id}>
 						<div className="card card-product-grid">
 							<a href={ "/products/" + product._id } className="img-wrap">
@@ -23,7 +22,7 @@ export default function Cards({ products }) {
 								<a href={ "/products/" + product._id } className="title text-truncate">
 									{product.name}
 								</a>
-								<small className="text-muted">{product.description}</small>
+								<small className="text-muted">{product.description.length > 25 ? `${product.description.slice(0, 25)}...` : product.description}</small>
 								<div className="price-wrap">
 									<strong className="price">R$ {product.price}</strong>
 								</div>
