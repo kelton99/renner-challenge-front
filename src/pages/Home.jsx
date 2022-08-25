@@ -13,24 +13,35 @@ export default function Home() {
 	useEffect(() => {
 		axios.get(baseURL).then((response) => {
 			setProducts(response.data);
-			setCheapestProduct(response.data[0]);
+
+			setCheapestProduct(
+				response.data.filter((product) => product.quantity > 0).reduce((acc, loc) => (acc.price < loc.price ? acc : loc))
+			);
 		});
-	}, []);
+	});
 
 	return (
 		<>
 			<Container>
 				<Row>
+					<div style={{position: "relative"}}>
 					<img
 						className="banner"
+						style={{width: "100%"}}
 						src={baseURL + "/images/" + cheapestProduct.image}
 						alt={cheapestProduct.image}
 					/>
+					<div className="banner-caption">
+						<h3 style={{color: "#aaaaaa"}}>
+							{cheapestProduct.name}
+						</h3>
+					</div>
+					</div>
 				</Row>
 				<br />
 				<br />
 				<Row>
-					<CarouselComponent products={products.slice(0, 3)} />
+					<CarouselComponent products={products} />
 				</Row>
 				<br />
 				<br />

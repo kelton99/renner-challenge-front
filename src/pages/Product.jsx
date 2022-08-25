@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { FaPlus, FaShoppingCart } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 
 export default function Product() {
@@ -9,8 +10,12 @@ export default function Product() {
 
 	const [product, SetProduct] = useState({});
 
+	const haveStock = (stock) => stock > 0;
+
 	useEffect(() => {
-		axios.get(`${baseURL}/${id}`).then((response) => {
+		axios
+			.get(`${baseURL}/${id}`)
+			.then((response) => {
 				SetProduct(response.data);
 				console.log(response.data);
 			})
@@ -39,18 +44,22 @@ export default function Product() {
 								<div className="rating-wrap my-3">
 									<span className="label-rating text-muted">
 										<i className="fa fa-shopping-basket"></i>
-										{product.name + " Em estoque"}
+										{haveStock(product.quantity)
+											? product.quantity + " in stock"
+											: "Out of stock"}
 									</span>
 								</div>
 								<div className="mb-3">
 									<var className="price h5">R$ {product.price}</var>
 								</div>
 								<p>{product.description}</p>
-
 								<hr />
-								<a href="/" className="btn btn-primary">
-									<i className="me-2 fa fa-shopping-basket"></i> Add to cart
-								</a>
+								{haveStock(product.quantity) &&
+									<a href="/" className="btn btn-primary">
+										<FaPlus className="icon" />
+										<FaShoppingCart className="icon" />
+									</a>
+								}
 							</article>
 						</div>
 					</div>
